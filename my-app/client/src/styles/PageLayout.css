@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  color: black;
+  text-align: center;
+  padding-top: 90px;
+}
+
+.pageHeader {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pageFooter {
+  text-align: center;
+  margin-top: 40px;
+  color: #777;
+  padding-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.pageImage {
+  width: 70vw;
+  max-width: 1100px;
+  aspect-ratio: 2 / 1;
+  height: auto;
+  margin: 40px auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 2rem;
+  margin-top: 30px;
+}
+
+.primaryButton {
+  padding: 1.2rem 2.5rem;
+  background-color: #3182ce;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1.3rem;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.primaryButton:hover {
+  background-color: #2b6cb0;
+  transform: scale(1.07);
+}
+
+.authFormWrapper {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.formField label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  text-align: left;
+}
+
+.formField input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.scoreContainer {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #2d3748;
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.scoreTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.scoreTableWrapper {
+  overflow-x: auto;
+}
+
+.scoreTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #4a5568;
+}
+
+th {
+  background-color: #1a202c;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #4a5568;
+}
+
+tr:hover {
+  background-color: #718096;
+}
+
+.highlightRow {
+  background-color: #f6e05e !important;
+  color: black;
+  font-weight: bold;
+}
+
+.scoreFooter {
+  margin-top: 2rem;
+  text-align: center;
+  color: #a0aec0;
+  font-size: 0.9rem;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 55px;
+  background: linear-gradient(to right, #1a202c, #2b6cb0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.navbarInner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  white-space: nowrap;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks li {
+  display: inline;
+}
+
+.navLinks a,
+.navLinks button {
+  color: white;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.navLinks a:hover,
+.navLinks button:hover,
+.navLinks .active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .navbarInner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navLinks {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .navLinks a,
+  .navLinks button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.shipPlacementContainer {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.shipList {
+  width: 200px;
+  padding: 10px;
+  background-color: #e2e8f0;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.shipItem {
+  margin-bottom: 12px;
+  cursor: grab;
+  user-select: none;
+  display: flex;
+}
+
+.shipSquare {
+  width: 32px;
+  height: 32px;
+  background-color: #64748b;
+  margin: 2px;
+  border-radius: 4px;
+}
+
+.game-board-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(10, 40px);
+  gap: 5px;
+}
+
+.tile {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  font-size: 1.5rem;
+  background-color: white;
+  transition: background-color 0.3s;
+}
+
+.bg-green-400 {
+  background-color: #68d391 !important;
+}
+/* 命中 */
+.hit, .bg-red-500 {
+  background-color: #f56565 !important;
+}
+
+/* 未命中 */
+.miss, .bg-gray-300 {
+  background-color: #e2e8f0 !important;
+}
