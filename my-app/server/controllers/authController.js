@@ -27,7 +27,7 @@ exports.register = async (req, res) => {
       { expiresIn: "7d" }
     );
     res
-      .cookie(COOKIE_NAME, token, { httpOnly: true, sameSite: "lax" })
+      .cookie(COOKIE_NAME, token, { httpOnly: true, sameSite: "none", secure: true, })
       .status(201)
       .json({ _id: user._id, username: user.username });
   } catch (err) {
@@ -61,8 +61,8 @@ exports.login = async (req, res) => {
     res
       .cookie(COOKIE_NAME, token, {
         httpOnly: true,
-        sameSite: "lax"
-        // secure: true,
+        sameSite: "none",
+        secure: true,
         // https started when deploy
       })
       .json({ message: "Log in success",_id: user._id,username: user.username });
@@ -84,7 +84,7 @@ exports.getMe = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  res.clearCookie(COOKIE_NAME, { httpOnly: true, sameSite: "lax" }).json({
+  res.clearCookie(COOKIE_NAME, { httpOnly: true, sameSite: "none",secure:true }).json({
     message: "Logged out",
   });
 };
