@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3001/api";
+const BASE_URL = "https://mengyuan-shi-yixuan-xiong-project3.onrender.com/api";
 
 const api = axios.create({
   baseURL: BASE_URL,
