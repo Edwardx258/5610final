@@ -45,7 +45,7 @@ mongoose
     console.log("Models loaded:", !!User, !!Game);
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server listening at http://localhost:${PORT}`);
+      console.log(`🚀 Server listening on port: ${PORT}`);
     });
   })
   .catch((err) => {
