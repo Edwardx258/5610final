@@ -3,13 +3,25 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import { useGameContext } from "../contexts/GameContext";
-import { fetchAllGames, fetchGamesForGuests, createNewGame, createAIGame, joinGame } from "../api/api";
+import {
+  fetchAllGames,
+  fetchGamesForGuests,
+  createNewGame,
+  createAIGame,
+  joinGame,
+} from "../api/api";
 import "../styles/PageLayout.css";
 
 function GamesPage() {
   const { isLoggedIn, user } = useContext(AuthContext);
   const { resetGameState } = useGameContext();
-  const [lists, setLists] = useState({ open: [], myOpen: [], active: [], completed: [], otherGames: [] });
+  const [lists, setLists] = useState({
+    open: [],
+    myOpen: [],
+    active: [],
+    completed: [],
+    otherGames: [],
+  });
   const [guestLists, setGuestLists] = useState({ active: [], completed: [] });
   const navigate = useNavigate();
 
@@ -27,7 +39,7 @@ function GamesPage() {
 
   const handleNewGame = async () => {
     try {
-      resetGameState(); // 重置棋盘、战舰等信息
+      resetGameState();
       const newGame = await createNewGame();
       localStorage.setItem("currentGameId", newGame._id);
       navigate("/place-ships");
@@ -71,7 +83,9 @@ function GamesPage() {
                       game.players[1]?.username ||
                       (game.players.length === 2 ? "Opponent" : "Waiting...");
                   const startTime = new Date(game.createdAt).toLocaleString();
-                  const endTime = game.updatedAt ? new Date(game.updatedAt).toLocaleString() : null;
+                  const endTime = game.updatedAt
+                      ? new Date(game.updatedAt).toLocaleString()
+                      : null;
 
                   return (
                       <li
@@ -82,7 +96,10 @@ function GamesPage() {
                           <p>
                             Game #{game._id.slice(-6)} | Host: <strong>{host}</strong>
                             {game.status !== "open" && (
-                                <> vs <strong>{opponent}</strong></>
+                                <>
+                                  {" "}
+                                  vs <strong>{opponent}</strong>
+                                </>
                             )}
                           </p >
                           <p className="text-sm text-gray-600">Start: {startTime}</p >
@@ -90,7 +107,9 @@ function GamesPage() {
                               <p className="text-sm text-gray-600">End: {endTime}</p >
                           )}
                           {extraLabel(game) && (
-                              <p className="text-sm text-blue-600">{extraLabel(game)}</p >
+                              <p className="text-sm text-blue-600">
+                                {extraLabel(game)}
+                              </p >
                           )}
                         </div>
                         <div>
@@ -125,7 +144,11 @@ function GamesPage() {
           {renderGameList("Active Games", guestLists.active)}
           {renderGameList("Completed Games", guestLists.completed, {
             extraLabel: (g) =>
-                g.winner ? `Winner: ${g.winner.username}` : "Completed (no winner info)",
+                g.winner
+                    ? `Winner: ${
+                        typeof g.winner === "object" ? g.winner.username : g.winner
+                    }`
+                    : "Completed (no winner info)",
           })}
         </div>
     );
@@ -151,13 +174,22 @@ function GamesPage() {
         {renderGameList("My Open Games", lists.myOpen)}
         {renderGameList("My Active Games", lists.active)}
         {renderGameList("My Completed Games", lists.completed, {
-          extraLabel: (g) =>
-              g.winner?.username === user.username ? "You Won" : "You Lost",
+          extraLabel: (g) => {
+            const winnerId =
+                typeof g.winner === "object" ? g.winner._id : g.winner;
+            return winnerId === user.id || winnerId === user._id
+                ? "You Won"
+                : "You Lost";
+          },
         })}
         {renderGameList("Other Games", lists.otherGames, {
           extraLabel: (g) =>
               g.status === "completed"
-                  ? `Winner: ${g.winner?.username || "Unknown"}`
+                  ? `Winner: ${
+                      typeof g.winner === "object"
+                          ? g.winner.username
+                          : g.winner || "Unknown"
+                  }`
                   : "In Progress",
         })}
 

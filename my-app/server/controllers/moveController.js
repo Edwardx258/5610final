@@ -1,4 +1,5 @@
 const Game = require("../models/Game");
+const User = require("../models/User");
 
 exports.makeMove = async (req, res) => {
   try {
@@ -40,13 +41,12 @@ exports.makeMove = async (req, res) => {
         game.currentTurn = opponentId;
       }
 
-      game.boardState.set(opponentId, board); // 必须重新set进Map！
-      game.markModified('boardState'); // 🚨 告诉Mongoose，boardState变了
+      game.boardState.set(opponentId, board);
+      game.markModified('boardState');
       await game.save();
 
-      return res.json(game);
     } else {
-      // === Player Attacks AI ===
+      // === Player vs AI Logic ===
       const boardAI = game.boardState.get("AI");
 
       if (!boardAI || !boardAI[row] || boardAI[row][col] === "H" || boardAI[row][col] === "M") {
@@ -55,6 +55,7 @@ exports.makeMove = async (req, res) => {
 
       const hitPlayer = boardAI[row][col] === "S";
       boardAI[row][col] = hitPlayer ? "H" : "M";
+
       game.moves.push({ by: userId, row, col, result: hitPlayer ? "H" : "M" });
 
       const aiHasShips = boardAI.flat().some(c => c === "S");
@@ -62,7 +63,7 @@ exports.makeMove = async (req, res) => {
         game.status = "completed";
         game.winner = userId;
       } else {
-        // === AI Counterattack ===
+        // AI Counterattack
         const boardPlayer = game.boardState.get(userId);
         const availableMoves = [];
 
@@ -89,18 +90,32 @@ exports.makeMove = async (req, res) => {
           game.status = "completed";
           game.winner = "AI";
         } else {
-          game.currentTurn = userId; // AI over
+          game.currentTurn = userId;
         }
 
-        game.boardState.set(userId, boardPlayer); // set board
+        game.boardState.set(userId, boardPlayer);
       }
 
-      game.boardState.set("AI", boardAI); //
-      game.markModified('boardState'); // 🚨 Mongoose，boardState change
+      game.boardState.set("AI", boardAI);
+      game.markModified('boardState');
       await game.save();
-
-      return res.json(game);
     }
+
+    // === After each move, check if we need to update scores ===
+    if (game.status === "completed" && !game.scoresUpdated) {
+      const winnerId = game.winner?.toString();
+      const loserId = game.players.find(p => p.toString() !== winnerId);
+
+      if (winnerId && loserId) {
+        await User.findByIdAndUpdate(winnerId, { $inc: { wins: 1 } });
+        await User.findByIdAndUpdate(loserId, { $inc: { losses: 1 } });
+
+        game.scoresUpdated = true;
+        await game.save();
+      }
+    }
+
+    res.json(game);
 
   } catch (err) {
     console.error("makeMove error:", err);

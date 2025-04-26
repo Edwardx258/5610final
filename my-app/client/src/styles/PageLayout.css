@@ -283,12 +283,18 @@ tr:hover {
 .bg-green-400 {
   background-color: #68d391 !important;
 }
-/* 命中 */
+
 .hit, .bg-red-500 {
   background-color: #f56565 !important;
 }
 
-/* 未命中 */
+
 .miss, .bg-gray-300 {
   background-color: #e2e8f0 !important;
+}
+
+/* highlight */
+.username-highlight {
+  font-weight: 700;
+  color: #f6e05e;
 }
