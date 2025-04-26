@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 3001;
 // Middle part
 app.use(
   cors({
-    origin:/^http:\/\/localhost:\d+$/ ,
+    origin:['https://mengyuan-shi-yixuan-xiong-project3.onrender.com',
+        /^http:\/\/localhost:\d+$/ ],
     credentials: true,
   })
 );
